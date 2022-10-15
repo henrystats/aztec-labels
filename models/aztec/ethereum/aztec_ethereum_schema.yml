@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: aztec_ethereum_rollupbridge_transfers
+    meta:
+      blockchain: ethereum
+      project: aztec
+      contributors: jackie, henrystats
+    config:
+      tags: ['ethereum','aztec']
+    description: "View aztec rollup bridge transactions"
+    columns:
+        - &tx_from
+          name: tx_from
+          description: "Transaction Initiator"
+        - &tx_to
+          name: tx_to
+          description: "Contract where transaction was sent to"
+        - &value 
+          name: value 
+          description: "raw tx value"
+        - &contract_address
+          name: contract_address
+          description: "token contract address"
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: "Blockchain Transaction hash"
+        - &evt_index
+          name: evt_index
+          description: "event_index"
+        - &evt_block_time
+          name: evt_block_time
+          description: "Blockchain Transaction Block Time"
+        - &evt_block_number
+          name: evt_block_number
+          description: "Blockchain Transaction Block Number"
+        - &symbol
+          name: symbol
+          description: "token symbol"
+        - &decimals
+          name: decimals
+          description: "token decimals"
+        - &value_norm
+          name: value_norm
+          description: "value norm"
+        - &broad_tx_type
+          name: broad_tx_type
+          description: "broad tx type"
+        - &spec_txn_type
+          name: spec_txn_type
+          description: "spec txn type"
+        - &to_protocol
+          name: to_protocol
+          description: "to protocol"
+        - &to_type
+          name: to_type
+          description: "to type"
+        - &from_protocol
+          name: from_protocol
+          description: "from protocol"
+        - &from_type
+          name: from_type
+          description: "from_type"
+        - &bridge_address
+          name: bridge_address
+          description: "bridge address"
+        - &bridge_protocol
+          name: bridge_protocol
+          description: "name of bridge protocol"
+        - &bridge_version 
+          name: bridge_version
+          description: "bridge version"
+
+  - name: aztec_ethereum_deposit_assets 
+    meta:
+      blockchain: ethereum
+      project: aztec
+      contributors: jackie, henrystats
+    config:
+      tags: ['ethereum','aztec']
+    description: "List of assets added"
+    columns:
+        - &asset_id
+          name: asset_id 
+        - &asset_address
+          name: asset_address
+        - &asset_gas_limit
+          name: asset_gas_limit
+        - &date_added
+          name: date_added 
+          
+
+
