@@ -25,7 +25,7 @@ dexs as (
             '' as maker, 
             originAmount as token_sold_amount_raw, 
             targetAmount as token_bought_amount_raw, 
-            NULL as amount_usd, 
+            CAST(NULL as double) as amount_usd, 
             origin as token_sold_address, 
             target as token_bought_address, 
             contract_address as project_contract_address, 
@@ -33,8 +33,13 @@ dexs as (
             '' as trace_address, 
             evt_index
         FROM 
-        dfx_finance_ethereum.Curve_evt_Trade
-        WHERE evt_block_time > NOW() - Interval '1 Week'
+        {{ source('dfx_finance_ethereum', 'Curve_evt_Trade') }}
+        {% if not is_incremental() %}
+        AND evt_block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT
