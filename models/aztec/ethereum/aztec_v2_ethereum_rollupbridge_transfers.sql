@@ -1,3 +1,21 @@
+{{ config(
+    schema = 'aztec_v2_ethereum',
+    alias = 'rollupbridge_transfers',
+    partition_by = ['evt_block_time'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "aztec",
+                                \'["henrystats"]\') }}'
+    )
+}}
+
+
+{% set first_transfer_date = '2022-06-06' %} -- first tx date 
+
 WITH 
 
 aztec_v2_contract_labels as (
@@ -15,10 +33,15 @@ aztec_v2_contract_labels as (
         FROM 
         {{ source('erc20_ethereum', 'evt_transfer') }} t 
         INNER JOIN 
-        aztec_v2_contract_labels at 
-            ON t.`from` = at.address
-            OR t.`to` = at.address 
-        WHERE t.evt_block_time >= '2022-06-06' -- first erc20 tx date 
+        aztec_v2_contract_labels ats 
+            ON t.`from` = ats.address
+            OR t.`to` = ats.address 
+            {% if not is_incremental() %}
+            AND t.evt_block_time >= '{{first_transfer_date}}'
+            {% endif %}
+            {% if is_incremental() %}
+            AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
  ), 
  
  eth_traces_filtered as (
@@ -27,10 +50,15 @@ aztec_v2_contract_labels as (
         FROM 
         ethereum.traces t 
         INNER JOIN 
-        aztec_v2_contract_labels at 
-            ON t.`from` = at.address
-            OR t.`to` = at.address 
-        WHERE t.block_time >= '2022-06-06' -- first eth tx date
+        aztec_v2_contract_labels ats
+            ON t.`from` = ats.address
+            OR t.`to` = ats.address 
+            {% if not is_incremental() %}
+            AND t.block_time >= '{{first_transfer_date}}'
+            {% endif %}
+            {% if is_incremental() %}
+            AND t.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
  ), 
  
  tfers_raw as (

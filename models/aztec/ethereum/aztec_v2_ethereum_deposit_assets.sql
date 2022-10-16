@@ -1,3 +1,12 @@
+{{config(
+        schema = 'aztec_v2_ethereum',
+        alias = 'ethereum_deposit_assets',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "aztec",
+                                    \'["henrystats"]\') }}')}}
+
+
 WITH 
 
 assets_added as (

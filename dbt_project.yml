@@ -35,6 +35,13 @@ models:
         +schema: aave_optimism
         +materialized: view
 
+    aztec:
+      +schema: aztec
+      +materialized: view
+      ethereum:
+        +schema: aztec_ethereum
+        +materialized: view
+
     balancer:
       +schema: balancer
       +materialized: view
@@ -122,6 +129,13 @@ models:
       +materialized: view
       ethereum:
         +schema: foundation_ethereum
+        +materialized: view
+
+    dfx:
+      +schema: dfx
+      +materialized: view
+      ethereum:
+        +schema: dfx_ethereum
         +materialized: view
     
     gmx:

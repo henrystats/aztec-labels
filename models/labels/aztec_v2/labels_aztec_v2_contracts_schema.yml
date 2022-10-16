@@ -17,6 +17,8 @@ models:
       - &address
         name: address
         description: "Address of bridge contract or rollup"
+        tests:
+          - unique
       - &name
         name: name
         description: "Description of the contract"

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: aztec_ethereum_rollupbridge_transfers
+  - name: aztec_v2_ethereum_rollupbridge_transfers
     meta:
       blockchain: ethereum
       project: aztec
@@ -71,7 +71,7 @@ models:
           name: bridge_version
           description: "bridge version"
 
-  - name: aztec_ethereum_deposit_assets 
+  - name: aztec_v2_ethereum_deposit_assets 
     meta:
       blockchain: ethereum
       project: aztec
